@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostsController!{% endblock %}
+
+{% block body %}
+    {% if action is defined and action == 'index' %}
+        {% for post in posts %}
+            <p>{{ post.title }}</p>
+        {% endfor %}
+    {% else %}
+        {% for post in posts %}
+            <p><a href="{{ path('blog_show', {'slug': post.slug}) }}">{{ post.title }}</a></p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
