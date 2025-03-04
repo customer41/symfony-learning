@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks()]
+#[ORM\Index(name: 'course__status__start_date__ind', columns: ['status', 'start_date'], options: ['where' => '(start_date IS NOT NULL)'])]
 class Course implements EntityInterface, HasMetaTimestampsInterface
 {
     #[ORM\Id]

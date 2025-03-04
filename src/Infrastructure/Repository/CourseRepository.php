@@ -26,7 +26,7 @@ class CourseRepository extends AbstractRepository
     /**
      * @return Course[]
      */
-    public function findAllPlannedWithinThreeMonths(): array
+    public function findAllPlannedWithinSomeTime(\DateTime $date): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
 
@@ -36,7 +36,7 @@ class CourseRepository extends AbstractRepository
             ->where(sprintf("c.status = '%s'", CourseStatus::Planned->value))
             ->andWhere('c.startDate is not null')
             ->andWhere('c.startDate <= :date')
-            ->setParameter('date', (new \DateTime('+3 month'))->format('Y-m-d'))
+            ->setParameter('date', $date->format('Y-m-d'))
             ->getQuery()
             ->getResult();
     }

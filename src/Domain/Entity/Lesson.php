@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks()]
 #[ORM\Index(name: 'lesson__module_id__ind', columns: ['module_id'])]
+#[ORM\Index(name: 'lesson__title__ind', columns: ['title'])]
 class Lesson implements EntityInterface, HasMetaTimestampsInterface
 {
     #[ORM\Id]
