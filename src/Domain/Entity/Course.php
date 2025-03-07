@@ -26,7 +26,7 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     private CourseStatus $status;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $manager;
+    private ?string $manager;
 
     #[ORM\OneToMany(targetEntity: Module::class, mappedBy: 'course')]
     private Collection $modules;
@@ -76,7 +76,7 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         return $this->manager;
     }
 
-    public function setManager(string $manager): void
+    public function setManager(?string $manager): void
     {
         $this->manager = $manager;
     }
