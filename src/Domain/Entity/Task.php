@@ -46,6 +46,9 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: false)]
     private \DateTime $updatedAt;
 
+    #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
+    private ?\DateTime $deletedAt = null;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
@@ -142,5 +145,15 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(): void
+    {
+        $this->deletedAt = new \DateTime();
     }
 }
