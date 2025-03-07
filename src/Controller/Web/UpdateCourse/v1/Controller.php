@@ -5,7 +5,6 @@ namespace App\Controller\Web\UpdateCourse\v1;
 use App\Controller\Web\UpdateCourse\v1\Input\UpdateCourseDTO;
 use App\Controller\Web\UpdateCourse\v1\Output\UpdatedCourseDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
