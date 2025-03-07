@@ -21,4 +21,15 @@ class ModuleRepository extends AbstractRepository
     {
         return $this->repositoryApi->find($id);
     }
+
+    public function update(): void
+    {
+        $this->flush();
+    }
+
+    public function remove(Module $module): void
+    {
+        $module->setDeletedAt();
+        $this->flush();
+    }
 }
