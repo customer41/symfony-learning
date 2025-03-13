@@ -41,6 +41,11 @@ class CourseRepository extends AbstractRepository
             ->getResult();
     }
 
+    public function isExistsById(int $id): bool
+    {
+        return $this->repositoryApi->count(['id' => $id]) === 1;
+    }
+
     public function update(): void
     {
         $this->flush();

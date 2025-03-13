@@ -41,13 +41,7 @@ class CourseService
 
     public function isExistsCourseById(int $id): bool
     {
-        try {
-            $this->getCourseById($id);
-        } catch (EntityNotFoundException) {
-            return false;
-        }
-
-        return true;
+        return $this->courseRepository->isExistsById($id);
     }
 
     public function updateCourse(UpdateCourseModel $updateCourseModel, int $courseId): Course
