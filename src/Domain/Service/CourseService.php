@@ -3,10 +3,10 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Course;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Model\CreateCourseModel;
 use App\Domain\Model\UpdateCourseModel;
 use App\Infrastructure\Repository\CourseRepository;
-use Doctrine\ORM\EntityNotFoundException;
 
 class CourseService
 {
@@ -33,7 +33,7 @@ class CourseService
         $course = $this->courseRepository->findById($id);
 
         if ($course === null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(Course::class);
         }
 
         return $course;
@@ -55,7 +55,7 @@ class CourseService
         $course = $this->courseRepository->findById($courseId);
 
         if ($course === null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(Course::class);
         }
 
         $course->setTitle($updateCourseModel->title);
@@ -73,7 +73,7 @@ class CourseService
         $course = $this->courseRepository->findById($id);
 
         if ($course === null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(Course::class);
         }
 
         $this->courseRepository->remove($course);

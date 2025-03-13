@@ -4,11 +4,11 @@ namespace App\Controller\Web\UpdateModule\v1;
 
 use App\Controller\Web\UpdateModule\v1\Input\UpdateModuleDTO;
 use App\Controller\Web\UpdateModule\v1\Output\UpdatedModuleDTO;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Factory\ModelFactory;
 use App\Domain\Model\UpdateModuleModel;
 use App\Domain\Service\CourseService;
 use App\Domain\Service\ModuleService;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Manager
@@ -34,8 +34,8 @@ class Manager
 
         try {
             $module = $this->moduleService->updateModule($updateModuleModel, $moduleId);
-        } catch (EntityNotFoundException) {
-            throw new NotFoundHttpException('Module not found');
+        } catch (EntityNotFoundException $e) {
+            throw new NotFoundHttpException($e->getDefaultMessage());
         }
 
         return new UpdatedModuleDTO(

@@ -3,11 +3,11 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Module;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Model\CreateModuleModel;
 use App\Domain\Model\UpdateModuleModel;
 use App\Infrastructure\Repository\CourseRepository;
 use App\Infrastructure\Repository\ModuleRepository;
-use Doctrine\ORM\EntityNotFoundException;
 
 class ModuleService
 {
@@ -37,7 +37,7 @@ class ModuleService
         $module = $this->moduleRepository->findById($id);
 
         if ($module === null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(Module::class);
         }
 
         return $module;
@@ -48,7 +48,7 @@ class ModuleService
         $module = $this->moduleRepository->findById($moduleId);
 
         if ($module === null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(Module::class);
         }
 
         $module->setTitle($updateModuleModel->title);
@@ -70,7 +70,7 @@ class ModuleService
         $module = $this->moduleRepository->findById($id);
 
         if ($module === null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(Module::class);
         }
 
         $this->moduleRepository->remove($module);

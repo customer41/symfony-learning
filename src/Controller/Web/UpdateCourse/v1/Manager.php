@@ -5,10 +5,10 @@ namespace App\Controller\Web\UpdateCourse\v1;
 use App\Controller\Web\UpdateCourse\v1\Input\UpdateCourseDTO;
 use App\Controller\Web\UpdateCourse\v1\Output\UpdatedCourseDTO;
 use App\Domain\Enum\CourseStatus;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Factory\ModelFactory;
 use App\Domain\Model\UpdateCourseModel;
 use App\Domain\Service\CourseService;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Manager
@@ -33,8 +33,8 @@ class Manager
 
         try {
             $course = $this->courseService->updateCourse($updateCourseModel, $courseId);
-        } catch (EntityNotFoundException) {
-            throw new NotFoundHttpException('Course not found');
+        } catch (EntityNotFoundException $e) {
+            throw new NotFoundHttpException($e->getDefaultMessage());
         }
 
         return new UpdatedCourseDTO(

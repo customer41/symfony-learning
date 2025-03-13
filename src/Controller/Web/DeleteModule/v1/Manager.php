@@ -2,8 +2,8 @@
 
 namespace App\Controller\Web\DeleteModule\v1;
 
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Service\ModuleService;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Manager
@@ -14,8 +14,8 @@ class Manager
     {
         try {
             $this->moduleService->deleteModuleById($id);
-        } catch (EntityNotFoundException) {
-            throw new NotFoundHttpException('Module not found');
+        } catch (EntityNotFoundException $e) {
+            throw new NotFoundHttpException($e->getDefaultMessage());
         }
     }
 }

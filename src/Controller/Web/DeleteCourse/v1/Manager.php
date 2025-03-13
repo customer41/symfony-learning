@@ -2,8 +2,8 @@
 
 namespace App\Controller\Web\DeleteCourse\v1;
 
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Service\CourseService;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Manager
@@ -14,8 +14,8 @@ class Manager
     {
         try {
             $this->courseService->deleteCourseById($id);
-        } catch (EntityNotFoundException) {
-            throw new NotFoundHttpException('Course not found');
+        } catch (EntityNotFoundException $e) {
+            throw new NotFoundHttpException($e->getDefaultMessage());
         }
     }
 }

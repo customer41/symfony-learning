@@ -3,8 +3,8 @@
 namespace App\Controller\Web\GetModule\v1;
 
 use App\Controller\Web\GetModule\v1\Output\GetModuleDTO;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Service\ModuleService;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Manager
@@ -15,8 +15,8 @@ class Manager
     {
         try {
             $module = $this->moduleService->getModuleById($id);
-        } catch (EntityNotFoundException) {
-            throw new NotFoundHttpException('Module not found');
+        } catch (EntityNotFoundException $e) {
+            throw new NotFoundHttpException($e->getDefaultMessage());
         }
 
         return new GetModuleDTO(
