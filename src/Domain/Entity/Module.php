@@ -23,7 +23,7 @@ class Module implements EntityInterface, HasMetaTimestampsInterface
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'modules')]
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id')]
-    private Course $course;
+    private ?Course $course = null;
 
     #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'module')]
     private Collection $lessons;
@@ -33,6 +33,9 @@ class Module implements EntityInterface, HasMetaTimestampsInterface
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: false)]
     private \DateTime $updatedAt;
+
+    #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
+    private ?\DateTime $deletedAt = null;
 
     public function __construct()
     {
@@ -54,12 +57,12 @@ class Module implements EntityInterface, HasMetaTimestampsInterface
         $this->title = $title;
     }
 
-    public function getCourse(): Course
+    public function getCourse(): ?Course
     {
         return $this->course;
     }
 
-    public function setCourse(Course $course): void
+    public function setCourse(?Course $course): void
     {
         $this->course = $course;
     }
@@ -90,5 +93,15 @@ class Module implements EntityInterface, HasMetaTimestampsInterface
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(): void
+    {
+        $this->deletedAt = new \DateTime();
     }
 }

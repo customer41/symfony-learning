@@ -40,4 +40,20 @@ class CourseRepository extends AbstractRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function isExistsById(int $id): bool
+    {
+        return $this->repositoryApi->count(['id' => $id]) === 1;
+    }
+
+    public function update(): void
+    {
+        $this->flush();
+    }
+
+    public function remove(Course $course): void
+    {
+        $course->setDeletedAt();
+        $this->flush();
+    }
 }
