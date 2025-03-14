@@ -3,10 +3,11 @@
 namespace App\Application\EventListener;
 
 use App\Controller\DTO\OutputDTOInterface;
+use App\Controller\DTO\SuccessResponse;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsEventListener(event: ViewEvent::class)]
@@ -16,17 +17,19 @@ class KernelViewExceptionListener
 
     public function onKernelView(ViewEvent $event): void
     {
-        $dto = $event->getControllerResult();
+        $result = $event->getControllerResult();
 
-        if ($dto instanceof OutputDTOInterface) {
-            $event->setResponse($this->getDTOResponse($dto));
+        if ($result instanceof OutputDTOInterface) {
+            $result = new SuccessResponse($result);
         }
+
+        $event->setResponse($this->getHttpResponse($result));
     }
 
-    private function getDTOResponse(OutputDTOInterface $dto): Response
+    private function getHttpResponse(mixed $successResponse): Response
     {
-        $serializedData = $this->serializer->serialize($dto, 'json');
+        $responseData = $this->serializer->serialize($successResponse, JsonEncoder::FORMAT);
 
-        return new JsonResponse($serializedData, json: true);
+        return new Response($responseData, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 }

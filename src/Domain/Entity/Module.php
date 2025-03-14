@@ -23,7 +23,7 @@ class Module implements EntityInterface, HasMetaTimestampsInterface
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'modules')]
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id')]
-    private ?Course $course;
+    private ?Course $course = null;
 
     #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'module')]
     private Collection $lessons;
