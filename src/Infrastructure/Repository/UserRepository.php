@@ -27,6 +27,11 @@ class UserRepository extends AbstractRepository
         return $this->repositoryApi->findOneBy(['email' => $email]);
     }
 
+    public function findByToken(string $token): ?User
+    {
+        return $this->repositoryApi->findOneBy(['apiToken' => $token]);
+    }
+
     public function updateToken(User $user): string
     {
         $token = base64_encode(random_bytes(20));

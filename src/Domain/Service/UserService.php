@@ -17,6 +17,11 @@ class UserService
         return $this->userRepository->findByEmail($email);
     }
 
+    public function findUserByToken(string $token): ?User
+    {
+        return $this->userRepository->findByToken($token);
+    }
+
     public function updateUserToken(string $email): ?string
     {
         $user = $this->findUserByEmail($email);
