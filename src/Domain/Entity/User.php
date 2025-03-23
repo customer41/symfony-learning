@@ -6,11 +6,13 @@ use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Enum\Role;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity()]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
-class User implements EntityInterface, HasMetaTimestampsInterface
+class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
@@ -129,6 +131,15 @@ class User implements EntityInterface, HasMetaTimestampsInterface
     public function setApiToken(?string $apiToken): void
     {
         $this->apiToken = $apiToken;
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 
     public function getCreatedAt(): \DateTime

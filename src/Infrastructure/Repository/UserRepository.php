@@ -21,4 +21,19 @@ class UserRepository extends AbstractRepository
     {
         return $this->repositoryApi->find($id);
     }
+
+    public function findByEmail(string $email): ?User
+    {
+        return $this->repositoryApi->findOneBy(['email' => $email]);
+    }
+
+    public function updateToken(User $user): string
+    {
+        $token = base64_encode(random_bytes(20));
+
+        $user->setApiToken($token);
+        $this->flush();
+
+        return $token;
+    }
 }
