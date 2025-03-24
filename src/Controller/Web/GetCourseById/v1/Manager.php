@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Web\GetCourse\v1;
+namespace App\Controller\Web\GetCourseById\v1;
 
-use App\Controller\Web\GetCourse\v1\Output\GetCourseDTO;
+use App\Controller\Web\GetCourseById\v1\Output\GetCourseDTO;
 use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Service\CourseService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

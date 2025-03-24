@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Web\GetModule\v1;
+namespace App\Controller\Web\GetModuleById\v1;
 
-use App\Controller\Web\GetModule\v1\Output\GetModuleDTO;
+use App\Controller\Web\GetModuleById\v1\Output\GetModuleDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 

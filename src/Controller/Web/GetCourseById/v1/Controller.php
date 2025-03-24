@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Web\GetCourse\v1;
+namespace App\Controller\Web\GetCourseById\v1;
 
-use App\Controller\Web\GetCourse\v1\Output\GetCourseDTO;
+use App\Controller\Web\GetCourseById\v1\Output\GetCourseDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 

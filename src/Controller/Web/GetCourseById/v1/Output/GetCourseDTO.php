@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Web\GetCourse\v1\Output;
+namespace App\Controller\Web\GetCourseById\v1\Output;
 
 use App\Controller\DTO\OutputDTOInterface;
 
