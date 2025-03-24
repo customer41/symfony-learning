@@ -26,6 +26,23 @@ class CourseRepository extends AbstractRepository
     /**
      * @return Course[]
      */
+    public function findByStudentId(int $studentId): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+
+        return $queryBuilder
+            ->select('c')
+            ->from(Course::class, 'c')
+            ->join('c.students', 's')
+            ->where('s.id = :studentId')
+            ->setParameter('studentId', $studentId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Course[]
+     */
     public function findAllPlannedWithinSomeTime(\DateTime $date): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();

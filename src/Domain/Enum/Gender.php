@@ -6,6 +6,6 @@ enum Gender: string
 {
     use BackedEnumTrait;
 
-    case Male = 'Mужской';
+    case Male = 'Мужской';
     case Female = 'Женский';
 }
