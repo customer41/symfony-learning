@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface, PasswordAuthenticatedUserInterface
@@ -39,6 +39,12 @@ class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface
 
     #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
     private ?string $apiToken = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Manager $manager = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Student $student = null;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
     private \DateTime $createdAt;
@@ -131,6 +137,34 @@ class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface
     public function setApiToken(?string $apiToken): void
     {
         $this->apiToken = $apiToken;
+    }
+
+    public function getManager(): ?Manager
+    {
+        return $this->manager;
+    }
+
+    public function setManager(?Manager $manager): void
+    {
+        if ($manager->getUser() !== $this) {
+            $manager->setUser($this);
+        }
+
+        $this->manager = $manager;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?Student $student): void
+    {
+        if ($student->getUser() !== $this) {
+            $student->setUser($this);
+        }
+
+        $this->student = $student;
     }
 
     public function eraseCredentials(): void
