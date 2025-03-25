@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SubUserTypeInterface;
 use App\Domain\Enum\Gender;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-class Student implements EntityInterface, HasMetaTimestampsInterface
+class Student implements EntityInterface, HasMetaTimestampsInterface, SubUserTypeInterface
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]

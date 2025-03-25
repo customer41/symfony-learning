@@ -14,11 +14,9 @@ readonly class CreatedUserDTO implements OutputDTOInterface
         public string $lastName,
         public bool $isActive,
         public array $roles = [],
-        public ?CreatedStudentDTO $student,
-        public null $teacher, // TODO add CreatedTeacherDTO later
-        public null $manager, // TODO add CreatedManagerDTO later
         public string $createdAt,
         public string $updatedAt,
+        public ?SubUserTypeOutputDTOInterface $subUser,
     ) {
     }
 }

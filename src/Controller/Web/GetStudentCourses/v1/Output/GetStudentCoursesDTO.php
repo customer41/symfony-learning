@@ -6,8 +6,8 @@ use App\Controller\DTO\OutputDTOInterface;
 
 readonly class GetStudentCoursesDTO implements OutputDTOInterface
 {
+    /** @param GetStudentCourseDTO[] $courses */
     public function __construct(
-        /** @param GetStudentCourseDTO[] $courses */
         public array $courses,
     ) {
     }

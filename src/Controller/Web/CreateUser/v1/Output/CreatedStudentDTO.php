@@ -2,9 +2,10 @@
 
 namespace App\Controller\Web\CreateUser\v1\Output;
 
-readonly class CreatedStudentDTO
+readonly class CreatedStudentDTO implements SubUserTypeOutputDTOInterface
 {
     public function __construct(
+        public string $userType,
         public int $id,
         public ?string $birthDate = null,
         public ?int $age = null,
