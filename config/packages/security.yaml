@@ -15,6 +15,9 @@ security:
         apiToken:
             pattern: ^/api/v1/token
             security: false
+        jwt:
+            pattern: ^/api/v1/jwt
+            security: false
         main:
             lazy: true
             stateless: true

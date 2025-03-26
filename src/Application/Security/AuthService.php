@@ -3,6 +3,7 @@
 namespace App\Application\Security;
 
 use App\Domain\Service\UserService;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AuthService
@@ -10,6 +11,8 @@ class AuthService
     public function __construct(
         private readonly UserService $userService,
         private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly JWTEncoderInterface $jwtEncoder,
+        private readonly int $tokenTTL,
     ) {
     }
 
@@ -26,5 +29,17 @@ class AuthService
     public function getToken(string $email): ?string
     {
         return $this->userService->updateUserToken($email);
+    }
+
+    public function getJWT(string $email): string
+    {
+        $user = $this->userService->findUserByEmail($email);
+        $jwtData = [
+            'email' => $email,
+            'roles' => $user?->getRoles() ?? [],
+            'exp' => time() + $this->tokenTTL
+        ];
+
+        return $this->jwtEncoder->encode($jwtData);
     }
 }
