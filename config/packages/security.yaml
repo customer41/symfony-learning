@@ -15,10 +15,14 @@ security:
         apiToken:
             pattern: ^/api/v1/token
             security: false
-        jwt:
+        apiJwt:
             pattern: ^/api/v1/jwt
             security: false
-        main:
+        jwtAuth:
+            lazy: true
+            stateless: true
+            custom_authenticator: App\Application\Security\JwtAuthenticator
+        simpleTokenAuth:
             lazy: true
             stateless: true
             custom_authenticator: App\Application\Security\ApiTokenAuthenticator
