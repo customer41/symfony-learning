@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsEventListener(event: ViewEvent::class)]
-class KernelViewExceptionListener
+class KernelViewEventListener
 {
     public function __construct(private readonly SerializerInterface $serializer) {}
 
