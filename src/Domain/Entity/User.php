@@ -40,6 +40,9 @@ class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface
     #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
     private ?string $apiToken = null;
 
+    #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
+    private ?string $refreshToken = null;
+
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Manager $manager = null;
 
@@ -137,6 +140,16 @@ class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface
     public function setApiToken(?string $apiToken): void
     {
         $this->apiToken = $apiToken;
+    }
+
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(?string $refreshToken): void
+    {
+        $this->refreshToken = $refreshToken;
     }
 
     public function getManager(): ?Manager

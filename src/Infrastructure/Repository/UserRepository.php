@@ -32,11 +32,32 @@ class UserRepository extends AbstractRepository
         return $this->repositoryApi->findOneBy(['apiToken' => $token]);
     }
 
+    public function findByRefreshToken(string $token): ?User
+    {
+        return $this->repositoryApi->findOneBy(['refreshToken' => $token]);
+    }
+
     public function updateToken(User $user): string
     {
         $token = base64_encode(random_bytes(20));
 
         $user->setApiToken($token);
+        $this->flush();
+
+        return $token;
+    }
+
+    public function clearRefreshToken(User $user): void
+    {
+        $user->setRefreshToken(null);
+        $this->flush();
+    }
+
+    public function updateRefreshToken(User $user): string
+    {
+        $token = base64_encode(random_bytes(20));
+
+        $user->setRefreshToken($token);
         $this->flush();
 
         return $token;

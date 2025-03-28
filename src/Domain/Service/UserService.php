@@ -45,6 +45,11 @@ class UserService
         return $this->userRepository->findByToken($token);
     }
 
+    public function findUserByRefreshToken(string $token): ?User
+    {
+        return $this->userRepository->findByRefreshToken($token);
+    }
+
     public function updateUserToken(string $email): ?string
     {
         $user = $this->findUserByEmail($email);
@@ -53,5 +58,15 @@ class UserService
         }
 
         return $this->userRepository->updateToken($user);
+    }
+
+    public function clearRefreshToken(User $user): void
+    {
+        $this->userRepository->clearRefreshToken($user);
+    }
+
+    public function updateRefreshToken(User $user): ?string
+    {
+        return $this->userRepository->updateRefreshToken($user);
     }
 }

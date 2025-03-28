@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class ApiTokenAuthenticator extends AbstractAuthenticator
+class RefreshTokenAuthenticator extends AbstractAuthenticator
 {
     public function __construct(private readonly UserService $userService) {}
 
@@ -28,11 +28,11 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         $authorization = $request->headers->get('Authorization');
         $token = str_starts_with($authorization, 'Bearer ') ? substr($authorization, 7) : null;
         if ($token === null) {
-            throw new UnauthorizedHttpException('Basic realm="Test simple token auth"', 'Unauthorized');
+            throw new UnauthorizedHttpException('Basic realm="Test refresh token auth"', 'Unauthorized');
         }
 
         return new SelfValidatingPassport(
-            new UserBadge($token, fn($token) => $this->userService->findUserByToken($token))
+            new UserBadge($token, fn($token) => $this->userService->findUserByRefreshToken($token))
         );
     }
 

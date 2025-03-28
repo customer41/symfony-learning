@@ -34,10 +34,12 @@ class AuthService
     public function getJWT(string $email): string
     {
         $user = $this->userService->findUserByEmail($email);
+        $refreshToken = $this->userService->updateRefreshToken($user);
         $jwtData = [
             'email' => $email,
             'roles' => $user?->getRoles() ?? [],
-            'exp' => time() + $this->tokenTTL
+            'refresh_token' => $refreshToken,
+            'exp' => time() + $this->tokenTTL,
         ];
 
         return $this->jwtEncoder->encode($jwtData);

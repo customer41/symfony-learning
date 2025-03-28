@@ -12,12 +12,16 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        apiToken:
+        apiSimpleToken:
             pattern: ^/api/v1/token
             security: false
         apiJwt:
             pattern: ^/api/v1/jwt
             security: false
+        apiRefreshJwt:
+            pattern: ^/api/v1/refresh-jwt
+            stateless: true
+            custom_authenticator: App\Application\Security\RefreshTokenAuthenticator
         jwtAuth:
             lazy: true
             stateless: true
