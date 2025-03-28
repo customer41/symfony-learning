@@ -28,7 +28,7 @@ class RefreshTokenAuthenticator extends AbstractAuthenticator
         $authorization = $request->headers->get('Authorization');
         $token = str_starts_with($authorization, 'Bearer ') ? substr($authorization, 7) : null;
         if ($token === null) {
-            throw new UnauthorizedHttpException('Basic realm="Test refresh token auth"', 'Unauthorized');
+            throw new UnauthorizedHttpException('Bearer realm="Test refresh token auth"', 'Unauthorized');
         }
 
         return new SelfValidatingPassport(

@@ -30,18 +30,18 @@ class JwtAuthenticator extends AbstractAuthenticator
         $extractor = new AuthorizationHeaderTokenExtractor('Bearer', 'Authorization');
         $jwt = $extractor->extract($request);
         if (!$jwt) {
-            throw new UnauthorizedHttpException('Basic realm="Test jwt auth"', 'Unauthorized');
+            throw new UnauthorizedHttpException('Bearer realm="Test jwt auth"', 'Unauthorized');
         }
 
         try {
             $jwtData = $this->jwtEncoder->decode($jwt);
         } catch (JWTDecodeFailureException $e) {
             $message = ($e->getReason() === JWTDecodeFailureException::EXPIRED_TOKEN) ? 'Expired token' : 'Unauthorized';
-            throw new UnauthorizedHttpException('Basic realm="Test jwt auth"', $message);
+            throw new UnauthorizedHttpException('Bearer realm="Test jwt auth"', $message);
         }
 
         if (!isset($jwtData['email'])) {
-            throw new UnauthorizedHttpException('Basic realm="Test jwt auth"', 'Unauthorized');
+            throw new UnauthorizedHttpException('Bearer realm="Test jwt auth"', 'Unauthorized');
         }
 
         return new SelfValidatingPassport(

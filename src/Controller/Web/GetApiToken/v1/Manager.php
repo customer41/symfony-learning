@@ -18,7 +18,7 @@ class Manager
         $password = $request->getPassword();
 
         if (!$email || !$password) {
-            throw new UnauthorizedHttpException('Basic realm="Test auth"', 'Unauthorized');
+            throw new UnauthorizedHttpException('Basic realm="Test getting simple token"', 'Unauthorized');
         }
 
         if (

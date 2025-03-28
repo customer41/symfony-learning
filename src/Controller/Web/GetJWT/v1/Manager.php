@@ -18,7 +18,7 @@ class Manager
         $password = $request->getPassword();
 
         if (!$email || !$password) {
-            throw new UnauthorizedHttpException('Basic realm="Test jwt auth"', 'Unauthorized');
+            throw new UnauthorizedHttpException('Basic realm="Test getting jwt"', 'Unauthorized');
         }
 
         if (!$this->authService->isCredentialsValid($email, $password)) {
