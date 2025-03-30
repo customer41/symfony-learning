@@ -22,14 +22,10 @@ security:
             pattern: ^/api/v1/refresh-jwt
             stateless: true
             custom_authenticator: App\Application\Security\RefreshTokenAuthenticator
-        jwtAuth:
+        main:
             lazy: true
             stateless: true
-            custom_authenticator: App\Application\Security\JwtAuthenticator
-        simpleTokenAuth:
-            lazy: true
-            stateless: true
-            custom_authenticator: App\Application\Security\ApiTokenAuthenticator
+            custom_authenticator: App\Application\Security\JwtOrSimpleTokenAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
