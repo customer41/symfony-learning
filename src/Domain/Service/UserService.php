@@ -3,6 +3,7 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\User;
+use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Model\CreateUserModel;
 use App\Infrastructure\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -50,11 +51,14 @@ class UserService
         return $this->userRepository->findByRefreshToken($token);
     }
 
-    public function updateUserToken(string $email): ?string
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function updateUserToken(string $email): string
     {
         $user = $this->findUserByEmail($email);
         if ($user === null) {
-            return null;
+            throw new EntityNotFoundException(User::class);
         }
 
         return $this->userRepository->updateToken($user);
@@ -65,7 +69,7 @@ class UserService
         $this->userRepository->clearRefreshToken($user);
     }
 
-    public function updateRefreshToken(User $user): ?string
+    public function updateRefreshToken(User $user): string
     {
         return $this->userRepository->updateRefreshToken($user);
     }
