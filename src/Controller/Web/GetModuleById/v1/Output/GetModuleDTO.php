@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Web\GetModule\v1\Output;
+namespace App\Controller\Web\GetModuleById\v1\Output;
 
 use App\Controller\DTO\OutputDTOInterface;
 

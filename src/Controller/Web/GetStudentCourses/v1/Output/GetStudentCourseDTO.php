@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Controller\Web\GetCourse\v1\Output;
+namespace App\Controller\Web\GetStudentCourses\v1\Output;
 
-use App\Controller\DTO\OutputDTOInterface;
-
-readonly class GetCourseDTO implements OutputDTOInterface
+readonly class GetStudentCourseDTO
 {
     public function __construct(
         public int $id,
@@ -13,8 +11,6 @@ readonly class GetCourseDTO implements OutputDTOInterface
         public ?string $manager,
         public ?string $startDate,
         public ?string $endDate,
-        public string $createdAt,
-        public string $updatedAt,
     ) {
     }
 }

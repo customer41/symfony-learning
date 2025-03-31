@@ -37,6 +37,12 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\Column(name: 'end_date', type: 'datetime', nullable: true)]
     private ?\DateTime $endDate;
 
+    /**
+     * @var Collection<int, Student>
+     */
+    #[ORM\ManyToMany(targetEntity: Student::class, mappedBy: 'courses')]
+    private Collection $students;
+
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
     private \DateTime $createdAt;
 
@@ -49,6 +55,7 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     public function __construct()
     {
         $this->modules = new ArrayCollection();
+        $this->students = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +116,29 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     public function setEndDate(?\DateTime $endDate): void
     {
         $this->endDate = $endDate;
+    }
+
+    /**
+     * @return Collection<int, Student>
+     */
+    public function getStudents(): Collection
+    {
+        return $this->students;
+    }
+
+    public function addStudent(Student $student): void
+    {
+        if (!$this->students->contains($student)) {
+            $this->students->add($student);
+            $student->addCourse($this);
+        }
+    }
+
+    public function removeStudent(Student $student): void
+    {
+        if ($this->students->removeElement($student)) {
+            $student->removeCourse($this);
+        }
     }
 
     public function getCreatedAt(): \DateTime

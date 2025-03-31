@@ -3,15 +3,18 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Course;
+use App\Domain\Entity\User;
 use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Model\CreateCourseModel;
 use App\Domain\Model\UpdateCourseModel;
 use App\Infrastructure\Repository\CourseRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class CourseService
 {
     public function __construct(
         private readonly CourseRepository $courseRepository,
+        private readonly Security $security,
     ) {
     }
 
@@ -37,6 +40,18 @@ class CourseService
         }
 
         return $course;
+    }
+
+    /**
+     * @return Course[]
+     */
+    public function getCurrentStudentCourses(): array
+    {
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $studentId = $user->getStudent()->getId();
+
+        return $this->courseRepository->findByStudentId($studentId);
     }
 
     public function isExistsCourseById(int $id): bool
