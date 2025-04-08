@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -21,6 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiFilter(SearchFilter::class, properties: ['lastName' => 'ipartial'])]
 #[ApiFilter(ExistsFilter::class, properties: ['student', 'manager'])]
 #[ApiFilter(BooleanFilter::class)]
+#[ApiFilter(OrderFilter::class, properties: ['firstName', 'lastName'])]
 class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -19,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial'])]
 #[ApiFilter(BackedEnumFilter::class, properties: ['status'])]
+#[ApiFilter(OrderFilter::class, properties: ['startDate', 'endDate'])]
 class Course implements EntityInterface, HasMetaTimestampsInterface
 {
     #[ORM\Id]

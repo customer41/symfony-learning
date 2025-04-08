@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -19,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource]
 #[ApiFilter(RangeFilter::class, properties: ['age'])]
 #[ApiFilter(BackedEnumFilter::class, properties: ['gender'])]
+#[ApiFilter(OrderFilter::class, properties: ['age', 'birthDate', 'user.firstName', 'user.lastName'])]
 class Student implements EntityInterface, HasMetaTimestampsInterface, SubUserTypeInterface
 {
     #[ORM\Id]
