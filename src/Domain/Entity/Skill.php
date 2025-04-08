@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks()]
 #[ORM\Index(name: 'skill__task_id__ind', columns: ['task_id'])]
+#[ApiResource]
 class Skill implements EntityInterface, HasMetaTimestampsInterface
 {
     #[ORM\Id]

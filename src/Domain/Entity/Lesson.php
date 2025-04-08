@@ -2,6 +2,10 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,6 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks()]
 #[ORM\Index(name: 'lesson__module_id__ind', columns: ['module_id'])]
 #[ORM\Index(name: 'lesson__title__ind', columns: ['title'])]
+#[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'teacher' => 'ipartial'])]
+#[ApiFilter(NumericFilter::class, properties: ['module.course.id'])]
 class Lesson implements EntityInterface, HasMetaTimestampsInterface
 {
     #[ORM\Id]

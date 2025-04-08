@@ -2,6 +2,10 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Enum\CourseStatus;
@@ -12,6 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks()]
 #[ORM\Index(name: 'course__status__start_date__ind', columns: ['status', 'start_date'], options: ['where' => '(start_date IS NOT NULL)'])]
+#[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial'])]
+#[ApiFilter(BackedEnumFilter::class, properties: ['status'])]
 class Course implements EntityInterface, HasMetaTimestampsInterface
 {
     #[ORM\Id]

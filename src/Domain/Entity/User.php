@@ -2,6 +2,11 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Enum\Role;
@@ -12,6 +17,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
+#[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['lastName' => 'ipartial'])]
+#[ApiFilter(ExistsFilter::class, properties: ['student', 'manager'])]
+#[ApiFilter(BooleanFilter::class)]
 class User implements EntityInterface, HasMetaTimestampsInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
