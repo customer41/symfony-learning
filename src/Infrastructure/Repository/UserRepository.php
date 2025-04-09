@@ -62,4 +62,10 @@ class UserRepository extends AbstractRepository
 
         return $token;
     }
+
+    public function remove(User $user): void
+    {
+        $user->setDeletedAt();
+        $this->flush();
+    }
 }

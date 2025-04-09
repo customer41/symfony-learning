@@ -8,6 +8,13 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GraphQl\DeleteMutation;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use App\Domain\ApiPlatform\GraphQL\Mutator\CreateUserMutator;
+use App\Domain\ApiPlatform\GraphQL\Mutator\DeleteUserMutator;
+use App\Domain\ApiPlatform\GraphQL\Mutator\UpdateUserPasswordMutator;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Enum\Role;
@@ -18,7 +25,39 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
-#[ApiResource]
+#[ApiResource(
+    graphQlOperations: [
+        new Query(),
+        new QueryCollection(),
+        new Mutation(
+            resolver: CreateUserMutator::class,
+            extraArgs: [
+                'createAs' => ['type' => 'String'],
+                'birthDate' => ['type' => 'String'],
+                'gender' => ['type' => 'String'],
+                'phone' => ['type' => 'String'],
+            ],
+            name: 'create',
+        ),
+        new Mutation(
+            args: [
+                'id' => ['type' => 'ID!'],
+                'email' => ['type' => 'String!'],
+                'firstName' => ['type' => 'String!'],
+                'lastName' => ['type' => 'String!'],
+                'isActive' => ['type' => 'Boolean!'],
+                'roles' => ['type' => 'Iterable!'],
+            ],
+            name: 'update',
+        ),
+        new Mutation(
+            resolver: UpdateUserPasswordMutator::class,
+            args: ['id' => ['type' => 'ID!'], 'password' => ['type' => 'String!']],
+            name: 'updatePassword',
+        ),
+        new DeleteMutation(resolver: DeleteUserMutator::class, name: 'delete'),
+    ],
+)]
 #[ApiFilter(SearchFilter::class, properties: ['lastName' => 'ipartial'])]
 #[ApiFilter(ExistsFilter::class, properties: ['student', 'manager'])]
 #[ApiFilter(BooleanFilter::class)]

@@ -21,4 +21,10 @@ class StudentRepository extends AbstractRepository
     {
         return $this->repositoryApi->find($id);
     }
+
+    public function remove(Student $student): void
+    {
+        $student->setDeletedAt();
+        $this->flush();
+    }
 }
