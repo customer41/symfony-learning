@@ -22,6 +22,9 @@ security:
             pattern: ^/api/v1/refresh-jwt
             stateless: true
             custom_authenticator: App\Application\Security\RefreshTokenAuthenticator
+        apiPlatform:
+            pattern: ^/api-platform
+            security: false
         main:
             lazy: true
             stateless: true
