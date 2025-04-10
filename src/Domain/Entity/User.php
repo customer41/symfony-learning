@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Domain\ApiPlatform\GraphQL\Mutator\CreateUserMutator;
 use App\Domain\ApiPlatform\GraphQL\Mutator\DeleteUserMutator;
 use App\Domain\ApiPlatform\GraphQL\Mutator\UpdateUserPasswordMutator;
+use App\Domain\ApiPlatform\GraphQL\Resolver\ActiveUsersCollectionResolver;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Enum\Role;
@@ -29,6 +30,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
     graphQlOperations: [
         new Query(),
         new QueryCollection(),
+        new QueryCollection(
+            resolver: ActiveUsersCollectionResolver::class,
+            args: [
+                'userType' => ['type' => 'String'],
+                'maxResults' => ['type' => 'Int'],
+            ],
+            read: false,
+            name: 'active',
+        ),
         new Mutation(
             resolver: CreateUserMutator::class,
             extraArgs: [

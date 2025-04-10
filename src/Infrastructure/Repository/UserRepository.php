@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\User;
+use App\Domain\Enum\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserRepository extends AbstractRepository
@@ -35,6 +36,32 @@ class UserRepository extends AbstractRepository
     public function findByRefreshToken(string $token): ?User
     {
         return $this->repositoryApi->findOneBy(['refreshToken' => $token]);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findActive(?UserType $userType = null): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+
+        $queryBuilder
+            ->select('u')
+            ->from(User::class, 'u')
+            ->where('u.isActive = true');
+
+        switch ($userType) {
+            case UserType::Student:
+                $queryBuilder->join('u.student', 's');
+                break;
+            case UserType::Manager:
+                $queryBuilder->join('u.manager', 'm');
+                break;
+            case UserType::Teacher:
+                // TODO
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function updateToken(User $user): string
