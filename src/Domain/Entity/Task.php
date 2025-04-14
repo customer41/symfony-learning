@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks()]
 #[ORM\Index(name: 'task__lesson_id__ind', columns: ['lesson_id'])]
+#[ApiResource]
 class Task implements EntityInterface, HasMetaTimestampsInterface
 {
     #[ORM\Id]

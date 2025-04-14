@@ -3,6 +3,7 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\User;
+use App\Domain\Enum\UserType;
 use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Model\CreateUserModel;
 use App\Infrastructure\Repository\UserRepository;
@@ -49,6 +50,14 @@ class UserService
     public function findUserByRefreshToken(string $token): ?User
     {
         return $this->userRepository->findByRefreshToken($token);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findActiveUsers(?UserType $userType = null): array
+    {
+        return $this->userRepository->findActive($userType);
     }
 
     /**

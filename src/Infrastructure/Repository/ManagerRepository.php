@@ -21,4 +21,10 @@ class ManagerRepository extends AbstractRepository
     {
         return $this->repositoryApi->find($id);
     }
+
+    public function remove(Manager $manager): void
+    {
+        $manager->setDeletedAt();
+        $this->flush();
+    }
 }

@@ -2,6 +2,11 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Interfaces\SubUserTypeInterface;
@@ -12,6 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
+#[ApiFilter(RangeFilter::class, properties: ['age'])]
+#[ApiFilter(BackedEnumFilter::class, properties: ['gender'])]
+#[ApiFilter(OrderFilter::class, properties: ['age', 'birthDate', 'user.firstName', 'user.lastName'])]
 class Student implements EntityInterface, HasMetaTimestampsInterface, SubUserTypeInterface
 {
     #[ORM\Id]
