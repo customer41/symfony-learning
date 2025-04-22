@@ -39,6 +39,9 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\OneToMany(targetEntity: Skill::class, mappedBy: 'task')]
     private Collection $skills;
 
+    #[ORM\OneToMany(targetEntity: StudentTask::class, mappedBy: 'task')]
+    private Collection $students;
+
     #[ORM\Column(name: 'submit_before', type: 'datetime', nullable: true)]
     private \DateTime $submitBefore;
 
@@ -54,6 +57,7 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     public function __construct()
     {
         $this->skills = new ArrayCollection();
+        $this->students = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +118,11 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     public function getSkills(): Collection
     {
         return $this->skills;
+    }
+
+    public function getStudents(): Collection
+    {
+        return $this->students;
     }
 
     public function getSubmitBefore(): ?\DateTime
