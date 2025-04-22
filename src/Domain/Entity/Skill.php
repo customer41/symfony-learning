@@ -27,6 +27,9 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $taskPercent;
 
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $isRequired;
+
     #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'skills')]
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id')]
     private Task $task;
@@ -73,6 +76,16 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
     public function setTaskPercent(int $taskPercent): void
     {
         $this->taskPercent = $taskPercent;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->isRequired;
+    }
+
+    public function setIsRequired(bool $isRequired): void
+    {
+        $this->isRequired = $isRequired;
     }
 
     public function getTask(): Task
