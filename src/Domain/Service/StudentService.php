@@ -14,6 +14,11 @@ class StudentService
     ) {
     }
 
+    public function findStudentById(int $id): ?Student
+    {
+        return $this->studentRepository->findById($id);
+    }
+
     public function createStudent(CreateStudentModel $createStudentModel): Student
     {
         $user = $this->userService->findUserById($createStudentModel->userId);

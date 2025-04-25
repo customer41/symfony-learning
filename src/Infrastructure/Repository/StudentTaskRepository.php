@@ -21,4 +21,9 @@ class StudentTaskRepository extends AbstractRepository
     {
         return $this->repositoryApi->find($id);
     }
+
+    public function update(): void
+    {
+        $this->flush();
+    }
 }
