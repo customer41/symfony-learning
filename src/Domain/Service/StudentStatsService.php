@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Bus\InvalidateCacheStatsBusInterface;
+use App\Domain\DTO\AddedStatsMessage;
 use App\Domain\DTO\StudentCourseDTO;
 use App\Domain\DTO\StudentsCourseDTO;
 use App\Domain\Entity\Student;
@@ -18,6 +20,7 @@ class StudentStatsService
     public function __construct(
         private readonly StudentStatsRepositoryInterface $studentStatsRepository,
         private readonly StudentStatsRepositoryCacheDecoratorInterface $studentStatsRepositoryCacheDecorator,
+        private readonly InvalidateCacheStatsBusInterface $invalidateCacheStatsBus,
         private readonly SkillService $skillService,
         private readonly StudentService $studentService,
     ) {
@@ -79,5 +82,12 @@ class StudentStatsService
         }
 
         $this->studentStatsRepository->createBatch($studentStats);
+
+        $this->invalidateCacheStatsBus->sendAddedStatsMessageAsync(
+            new AddedStatsMessage(
+                $student->getId(),
+                $skills[0]->getTask()->getLesson()->getModule()->getCourse()->getId(),
+            ),
+        );
     }
 }

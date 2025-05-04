@@ -5,10 +5,31 @@ namespace App\Infrastructure\Service;
 use App\Domain\Enum\EducationItem;
 use App\Infrastructure\DTO\StatsPeriodDTO;
 use App\Infrastructure\DTO\StudentCourseDTO;
+use Psr\Cache\InvalidArgumentException;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class StudentStatsCacheService
 {
     public const string CACHE_KEY_PREFIX = 'stats';
+
+    public function __construct(
+        public readonly TagAwareCacheInterface $tagAwareCache,
+    ) {
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function invalidateCache(StudentCourseDTO $studentCourseDTO): bool
+    {
+        $tags = [];
+        $tags[] = $this->getTagForStatsByCourseStudent($studentCourseDTO);
+        $tags[] = $this->getTagForStatsByCourseStudents(
+            new StatsPeriodDTO($studentCourseDTO->courseId, null, new \DateTime())
+        );
+
+        return $this->tagAwareCache->invalidateTags($tags);
+    }
 
     public function getCacheKeyForStatsByCourseStudent(StudentCourseDTO $studentCourseDTO): string
     {
