@@ -2,16 +2,20 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\DTO\StudentCourseDTO;
+use App\Domain\DTO\StudentsCourseDTO;
 use App\Domain\Entity\Student;
 use App\Domain\Entity\StudentStats;
 use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Model\CreateStudentStatsModel;
-use App\Infrastructure\Repository\StudentStatsRepository;
+use App\Domain\Model\OneCourseManyStudentsStatsModel;
+use App\Domain\Model\OneCourseOneStudentStatsModel;
+use App\Domain\Repository\StudentStatsRepositoryInterface;
 
 class StudentStatsService
 {
     public function __construct(
-        private readonly StudentStatsRepository $studentStatsRepository,
+        private readonly StudentStatsRepositoryInterface $studentStatsRepository,
         private readonly SkillService $skillService,
         private readonly StudentService $studentService,
     ) {
@@ -31,6 +35,19 @@ class StudentStatsService
         int|array|null $skill = null,
     ): array {
         return $this->studentStatsRepository->findByIds($student, $course, $module, $lesson, $task, $skill);
+    }
+
+    public function getOneCourseManyStudentsStats(StudentsCourseDTO $studentsCourseDTO): OneCourseManyStudentsStatsModel
+    {
+        $oneCourseManyStudentsStatsModel = $this->studentStatsRepository->getOneCourseManyStudentsAggregateStats($studentsCourseDTO);
+        $oneCourseManyStudentsStatsModel->sortByStudentScore($studentsCourseDTO->sortOrder);
+
+        return $oneCourseManyStudentsStatsModel;
+    }
+
+    public function getOneCourseOneStudentStats(StudentCourseDTO $studentCourseDTO): OneCourseOneStudentStatsModel
+    {
+        return $this->studentStatsRepository->getOneCourseOneStudentAggregateStats($studentCourseDTO);
     }
 
     /**
