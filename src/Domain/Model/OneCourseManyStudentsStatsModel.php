@@ -41,14 +41,16 @@ class OneCourseManyStudentsStatsModel
 
     private function calculateMaxScore(): int
     {
-        return max($this->getScores());
+        $scores = $this->getScores();
+
+        return !empty($scores) ? max($scores) : 0;
     }
 
     private function calculateAvgScore(): float
     {
         $scores = $this->getScores();
 
-        return array_sum($scores) / count($scores);
+        return !empty($scores) ? array_sum($scores) / count($scores): 0;
     }
 
     /**
