@@ -42,3 +42,7 @@ services:
         arguments:
             - '@redis_client'
             - 'my_app'
+
+    App\Infrastructure\Repository\StudentStatsRepositoryCacheDecorator:
+        arguments:
+            $tagAwareCache: '@redis_tag_aware_adapter'

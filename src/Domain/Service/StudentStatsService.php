@@ -10,12 +10,14 @@ use App\Domain\Exception\EntityNotFoundException;
 use App\Domain\Model\CreateStudentStatsModel;
 use App\Domain\Model\OneCourseManyStudentsStatsModel;
 use App\Domain\Model\OneCourseOneStudentStatsModel;
+use App\Domain\Repository\StudentStatsRepositoryCacheDecoratorInterface;
 use App\Domain\Repository\StudentStatsRepositoryInterface;
 
 class StudentStatsService
 {
     public function __construct(
         private readonly StudentStatsRepositoryInterface $studentStatsRepository,
+        private readonly StudentStatsRepositoryCacheDecoratorInterface $studentStatsRepositoryCacheDecorator,
         private readonly SkillService $skillService,
         private readonly StudentService $studentService,
     ) {
@@ -39,7 +41,7 @@ class StudentStatsService
 
     public function getOneCourseManyStudentsStats(StudentsCourseDTO $studentsCourseDTO): OneCourseManyStudentsStatsModel
     {
-        $oneCourseManyStudentsStatsModel = $this->studentStatsRepository->getOneCourseManyStudentsAggregateStats($studentsCourseDTO);
+        $oneCourseManyStudentsStatsModel = $this->studentStatsRepositoryCacheDecorator->getOneCourseManyStudentsAggregateStats($studentsCourseDTO);
         $oneCourseManyStudentsStatsModel->sortByStudentScore($studentsCourseDTO->sortOrder);
 
         return $oneCourseManyStudentsStatsModel;
@@ -47,7 +49,7 @@ class StudentStatsService
 
     public function getOneCourseOneStudentStats(StudentCourseDTO $studentCourseDTO): OneCourseOneStudentStatsModel
     {
-        return $this->studentStatsRepository->getOneCourseOneStudentAggregateStats($studentCourseDTO);
+        return $this->studentStatsRepositoryCacheDecorator->getOneCourseOneStudentAggregateStats($studentCourseDTO);
     }
 
     /**
