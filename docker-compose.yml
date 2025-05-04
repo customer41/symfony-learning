@@ -48,6 +48,21 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
 
+  supervisor:
+    build: docker/supervisor
+    container_name: 'supervisor'
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+    working_dir: /app
+    command: [ "supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
+
+  redis:
+    container_name: 'redis'
+    image: redis:alpine
+    ports:
+      - 6379:6379
+
 volumes:
   dump:
   postgresql:
