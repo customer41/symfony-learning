@@ -30,3 +30,15 @@ services:
     App\Infrastructure\Bus\RabbitMqBus:
         calls:
             - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::AddStudentStats, '@old_sound_rabbit_mq.add_student_stats_producer' ] ]
+
+    redis_client:
+        class: Redis
+        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
+        arguments:
+            - '%env(REDIS_DSN)%'
+
+    redis_tag_aware_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter
+        arguments:
+            - '@redis_client'
+            - 'my_app'
