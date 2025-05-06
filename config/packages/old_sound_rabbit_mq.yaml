@@ -1,0 +1,36 @@
+old_sound_rabbit_mq:
+    connections:
+        default:
+            url: '%env(RABBITMQ_URL)%'
+
+    producers:
+        add_student_stats:
+            connection: default
+            exchange_options: { name: 'old_sound_rabbit_mq.add_student_stats', type: direct }
+        invalidate_stats_cache:
+            connection: default
+            exchange_options: { name: 'old_sound_rabbit_mq.invalidate_stats_cache', type: direct }
+
+    consumers:
+        add_student_stats:
+            connection: default
+            exchange_options: { name: 'old_sound_rabbit_mq.add_student_stats', type: direct }
+            queue_options: { name: 'old_sound_rabbit_mq.consumer.add_student_stats' }
+            callback: App\Controller\Amqp\AddStudentStats\Consumer
+            idle_timeout: 300
+            idle_timeout_exit_code: 0
+            graceful_max_execution:
+                timeout: 1800
+                exit_code: 0
+            qos_options: { prefetch_size: 0, prefetch_count: 1, global: false }
+        invalidate_stats_cache:
+            connection: default
+            exchange_options: { name: 'old_sound_rabbit_mq.invalidate_stats_cache', type: direct }
+            queue_options: { name: 'old_sound_rabbit_mq.consumer.invalidate_stats_cache' }
+            callback: App\Controller\Amqp\InvalidateStatsCache\Consumer
+            idle_timeout: 300
+            idle_timeout_exit_code: 0
+            graceful_max_execution:
+                timeout: 1800
+                exit_code: 0
+            qos_options: { prefetch_size: 0, prefetch_count: 1, global: false }

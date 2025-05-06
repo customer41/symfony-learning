@@ -42,4 +42,12 @@ RUN docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) \
     pcntl \
     pdo_pgsql \
     sockets \
-    zip \
+    zip
+
+RUN pecl channel-update pecl.php.net \
+    && pecl install -o -f \
+        redis \
+        event \
+    && rm -rf /tmp/pear \
+    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
+    && echo "extension=event.so" > /usr/local/etc/php/conf.d/event.ini

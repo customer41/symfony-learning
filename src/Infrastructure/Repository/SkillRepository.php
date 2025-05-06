@@ -21,4 +21,37 @@ class SkillRepository extends AbstractRepository
     {
         return $this->repositoryApi->find($id);
     }
+
+    /**
+     * @param int[] $ids
+     *
+     * @return Skill[]
+     */
+    public function findByIds(array $ids): array
+    {
+        return $this->repositoryApi->findBy(['id' => $ids]);
+    }
+
+    /**
+     * @return Skill[]
+     */
+    public function findByTaskId(int $taskId, bool $requiredSkillsOnly = false): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+
+        $queryBuilder
+            ->select('s')
+            ->from(Skill::class, 's')
+            ->join('s.task', 't')
+            ->where('t.id = :taskId');
+
+        if ($requiredSkillsOnly) {
+            $queryBuilder->andWhere('s.isRequired = true');
+        }
+
+        return $queryBuilder
+            ->setParameter('taskId', $taskId)
+            ->getQuery()
+            ->getResult();
+    }
 }

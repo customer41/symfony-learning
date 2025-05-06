@@ -50,6 +50,9 @@ class Student implements EntityInterface, HasMetaTimestampsInterface, SubUserTyp
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'students')]
     private Collection $courses;
 
+    #[ORM\OneToMany(targetEntity: StudentTask::class, mappedBy: 'student')]
+    private Collection $tasks;
+
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
     private \DateTime $createdAt;
 
@@ -62,6 +65,7 @@ class Student implements EntityInterface, HasMetaTimestampsInterface, SubUserTyp
     public function __construct()
     {
         $this->courses = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,6 +156,11 @@ class Student implements EntityInterface, HasMetaTimestampsInterface, SubUserTyp
     public function removeCourse(Course $course): void
     {
         $this->courses->removeElement($course);
+    }
+
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
     }
 
     public function getCreatedAt(): \DateTime

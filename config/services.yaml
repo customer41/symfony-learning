@@ -26,3 +26,28 @@ services:
     App\Application\Security\AuthService:
         arguments:
             $tokenTTL: '%env(JWT_TTL_SEC)%'
+
+    App\Infrastructure\Bus\RabbitMqBus:
+        calls:
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::AddStudentStats, '@old_sound_rabbit_mq.add_student_stats_producer' ] ]
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::InvalidateStatsCache, '@old_sound_rabbit_mq.invalidate_stats_cache_producer' ] ]
+
+    redis_client:
+        class: Redis
+        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
+        arguments:
+            - '%env(REDIS_DSN)%'
+
+    redis_tag_aware_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter
+        arguments:
+            - '@redis_client'
+            - 'my_app'
+
+    App\Infrastructure\Repository\StudentStatsRepositoryCacheDecorator:
+        arguments:
+            $tagAwareCache: '@redis_tag_aware_adapter'
+
+    App\Infrastructure\Service\StudentStatsCacheService:
+        arguments:
+            $tagAwareCache: '@redis_tag_aware_adapter'
